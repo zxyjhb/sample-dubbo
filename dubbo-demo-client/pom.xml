@@ -1,0 +1,26 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>mac.smaple</groupId>
+  <artifactId>dubbo-demo-client</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  
+  
+  
+  <dependencies>
+  	
+  	<dependency>
+	  	<groupId>mac.sample</groupId>
+		<artifactId>dubbo-sample-api</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+  	</dependency>
+  	
+  	<!-- 引入自定义的DUBBO包  嘿嘿 -->
+  	<dependency>
+	  	<groupId>mac.sample</groupId>
+		<artifactId>dubbo</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+  	</dependency>
+  	
+  </dependencies>
+  
+</project>
