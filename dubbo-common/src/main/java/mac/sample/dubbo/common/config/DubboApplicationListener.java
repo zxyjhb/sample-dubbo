@@ -17,17 +17,9 @@ public class DubboApplicationListener implements ApplicationListener<Application
 
 	private DubboBootstrap dubboBootstrap;
 	
-	public DubboBootstrap getDubboBootstrap() {
-		return dubboBootstrap;
-	}
-
-
-
-	public void setDubboBootstrap(DubboBootstrap dubboBootstrap) {
-		this.dubboBootstrap = dubboBootstrap;
-	}
-
-
+	public DubboApplicationListener() {
+        dubboBootstrap = new DubboBootstrap();
+    }
 
 	public void onApplicationEvent(ApplicationEvent event) {
 		
