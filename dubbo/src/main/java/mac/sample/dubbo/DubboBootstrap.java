@@ -12,7 +12,4 @@ package mac.sample.dubbo;
  */
 public class DubboBootstrap {
 	
-	
-	
-
 }
