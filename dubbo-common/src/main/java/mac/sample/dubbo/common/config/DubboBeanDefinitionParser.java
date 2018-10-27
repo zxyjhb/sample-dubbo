@@ -42,6 +42,7 @@ public class DubboBeanDefinitionParser implements BeanDefinitionParser {
 	/**
 	 * 自定义解析器
 	 */
+	@SuppressWarnings("rawtypes")
 	public BeanDefinition parse(Element element, ParserContext parserContext) {
 		
 		logger.info("parse id : "+ element.getAttribute("id"));
@@ -93,15 +94,26 @@ public class DubboBeanDefinitionParser implements BeanDefinitionParser {
             if (property != null) {
                 Object value = property.getValue();
                 if (value instanceof ProtocolConfig && id.equals(((ProtocolConfig) value).getName())) {
-                    definition.getPropertyValues().addPropertyValue("protocol", new RuntimeBeanReference(id));
+                	
+                    definition.getPropertyValues().addPropertyValue("host", element.getAttribute("host"));
+                    definition.getPropertyValues().addPropertyValue("port", element.getAttribute("port"));
                 }
             }
-            
         }
-        	
-        
-		// TODO Auto-generated method stub
-		return null;
+        //dubbo端口配置
+        if (ServiceConfig.class.equals(beanClass)) {
+        	BeanDefinition definition = parserContext.getRegistry().getBeanDefinition(id);
+            PropertyValue property = definition.getPropertyValues().getPropertyValue("service");
+            if (property != null) {
+                Object value = property.getValue();
+                if (value instanceof ServiceConfig && id.equals(((ServiceConfig) value).getName())) {
+                    definition.getPropertyValues().addPropertyValue("registryConfig", new RuntimeBeanReference(element.getAttribute("registry")));
+                    definition.getPropertyValues().addPropertyValue("ref", new RuntimeBeanReference(element.getAttribute("demoServer")));
+                    definition.getPropertyValues().addPropertyValue("interfaceClass", element.getAttribute("interface"));
+                }
+            }
+        }
+		return beanDefinition;
 	}
 
 }

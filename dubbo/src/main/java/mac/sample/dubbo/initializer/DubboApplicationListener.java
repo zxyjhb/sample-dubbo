@@ -1,7 +1,9 @@
-package mac.sample.dubbo.common.config;
+package mac.sample.dubbo.initializer;
 
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
+import org.springframework.context.event.ApplicationContextEvent;
 import org.springframework.context.event.ContextClosedEvent;
 import org.springframework.context.event.ContextRefreshedEvent;
 
@@ -13,17 +15,17 @@ import org.springframework.context.event.ContextRefreshedEvent;
  * @author jihaibo
  *
  */
-public class DubboApplicationListener implements ApplicationListener<ApplicationEvent> {
+public class DubboApplicationListener implements ApplicationListener<ApplicationContextEvent> {
 
 	private DubboBootstrap dubboBootstrap;
 	
 	public DubboApplicationListener() {
-        dubboBootstrap = new DubboBootstrap();
     }
 
-	public void onApplicationEvent(ApplicationEvent event) {
+	public void onApplicationEvent(ApplicationContextEvent event) {
 		
 		if (event instanceof ContextRefreshedEvent) {
+			dubboBootstrap = new DubboBootstrap(event.getApplicationContext());
             dubboBootstrap.start();
         } else if (event instanceof ContextClosedEvent) {
             dubboBootstrap.stop();

@@ -12,7 +12,7 @@
 
     <context-param>
         <param-name>contextInitializerClasses</param-name>
-        <param-value>mac.sample.dubbo.common.config.DubboApplicationContextInitializer</param-value>
+        <param-value>mac.sample.dubbo.initializer.DubboApplicationContextInitializer</param-value>
     </context-param>
 
     <listener>
