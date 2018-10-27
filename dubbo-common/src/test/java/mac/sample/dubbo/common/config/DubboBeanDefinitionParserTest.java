@@ -10,10 +10,16 @@ public class DubboBeanDefinitionParserTest {
 	
 	public static RegistryConfig registryConfig;
 	
+	public static ServiceConfig serviceConfig;
+	
+	public static ProtocolConfig protocolConfig;
+	
 	static {
 		ApplicationContext appContext = new ClassPathXmlApplicationContext("classpath*:/META-INF/spring-test.xml");
 		applicationConfig = (ApplicationConfig) appContext.getBean("dubboSample");
-		registryConfig = (RegistryConfig) appContext.getBean("macRegistry");
+		registryConfig = (RegistryConfig) appContext.getBean("macRegistry"); 
+		serviceConfig = (ServiceConfig) appContext.getBean("mac.sample.dubbo.common.config.ApplicationConfig");
+		protocolConfig = (ProtocolConfig) appContext.getBean("dubbo");
 	}
 	
 	
@@ -21,7 +27,10 @@ public class DubboBeanDefinitionParserTest {
 		
 		
 		System.out.println(applicationConfig.getId());
-		System.out.println(registryConfig.getAddress());
+		System.out.println(registryConfig);
+
+		System.out.println(protocolConfig);
+		System.out.println(serviceConfig);
 	}
 
 }

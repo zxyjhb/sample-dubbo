@@ -61,6 +61,11 @@ public class ProtocolConfig extends AbstractConfig {
 	public void setPort(Integer port) {
 		this.port = port;
 	}
+
+	@Override
+	public String toString() {
+		return "ProtocolConfig [name=" + name + ", host=" + host + ", port=" + port + "]";
+	}
     
     
 

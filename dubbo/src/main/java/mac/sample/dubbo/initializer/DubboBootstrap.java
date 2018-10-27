@@ -57,16 +57,14 @@ public class DubboBootstrap {
 	 */
 	public void start() {
 		logger.info("-----------------[DubboBootstrap] start--------------------------");
-		logger.info("[DubboBootstrap] config service");
-		
 		Map<String, ServiceConfig> serviceConfigMap = applicationContext == null ? null : BeanFactoryUtils.beansOfTypeIncludingAncestors(applicationContext, ServiceConfig.class, false, false);
         //存在dubbo配置
 		if(serviceConfigMap!=null & serviceConfigMap.size()>0) {
         	for(ServiceConfig serviceConfig : serviceConfigMap.values()) {
+        		logger.info("[DubboBootstrap] config service:" + serviceConfig);
         		serviceConfigList.add(serviceConfig);
         	}
         }
-
 	}
 
 	/**

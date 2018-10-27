@@ -22,6 +22,11 @@ public class RegistryConfig extends AbstractConfig {
 	public void setAddress(String address) {
 		this.address = address;
 	}
+
+	@Override
+	public String toString() {
+		return "RegistryConfig [address=" + address + "]";
+	}
     
     
     

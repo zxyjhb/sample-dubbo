@@ -65,11 +65,13 @@ public class ServiceConfig<T> extends AbstractConfig {
 	public void setRef(T ref) {
 		this.ref = ref;
 	}
+
+	@Override
+	public String toString() {
+		return "ServiceConfig [name=" + name + ", registryConfig=" + registryConfig + ", interfaceName=" + interfaceName
+				+ ", interfaceClass=" + interfaceClass + ", ref=" + ref + "]";
+	}
     
     //methods  先不搞了
-    
-    
-	
-	
 
 }

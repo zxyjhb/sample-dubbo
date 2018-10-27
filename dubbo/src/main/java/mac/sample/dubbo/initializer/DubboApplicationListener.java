@@ -1,7 +1,5 @@
 package mac.sample.dubbo.initializer;
 
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ApplicationContextEvent;
 import org.springframework.context.event.ContextClosedEvent;
@@ -22,6 +20,9 @@ public class DubboApplicationListener implements ApplicationListener<Application
 	public DubboApplicationListener() {
     }
 
+	/**
+	 * 添加监听方法
+	 */
 	public void onApplicationEvent(ApplicationContextEvent event) {
 		
 		if (event instanceof ContextRefreshedEvent) {

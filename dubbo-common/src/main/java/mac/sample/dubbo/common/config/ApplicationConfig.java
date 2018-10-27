@@ -23,8 +23,9 @@ public class ApplicationConfig extends AbstractConfig {
 	public void setName(String name) {
 		this.name = name;
 	}
-    
-    
-    
-    
+
+	@Override
+	public String toString() {
+		return "ApplicationConfig [name=" + name + "]";
+	}   
 }
