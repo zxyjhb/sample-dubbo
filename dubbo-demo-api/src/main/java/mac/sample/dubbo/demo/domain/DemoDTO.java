@@ -38,6 +38,11 @@ public class DemoDTO {
 	public void setAge(String age) {
 		this.age = age;
 	}
+
+	@Override
+	public String toString() {
+		return "DemoDTO [id=" + id + ", name=" + name + ", age=" + age + "]";
+	}
 	
 	
 

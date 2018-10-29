@@ -1,6 +1,12 @@
-package mac.sample.dubbo.common.config;
+package mac.sample.dubbo.common.schema;
 
 import org.springframework.beans.factory.xml.NamespaceHandlerSupport;
+
+import mac.sample.dubbo.common.bean.ReferenceBean;
+import mac.sample.dubbo.common.bean.ServiceBean;
+import mac.sample.dubbo.common.config.ApplicationConfig;
+import mac.sample.dubbo.common.config.ProtocolConfig;
+import mac.sample.dubbo.common.config.RegistryConfig;
 
 
 /**
@@ -26,7 +32,9 @@ public class DubboNamespaceHandler extends NamespaceHandlerSupport{
 		registerBeanDefinitionParser("application", new DubboBeanDefinitionParser(ApplicationConfig.class));
 		registerBeanDefinitionParser("registry", new DubboBeanDefinitionParser(RegistryConfig.class));
 		registerBeanDefinitionParser("protocol", new DubboBeanDefinitionParser(ProtocolConfig.class));
-        registerBeanDefinitionParser("service", new DubboBeanDefinitionParser(ServiceConfig.class));
+        registerBeanDefinitionParser("service", new DubboBeanDefinitionParser(ServiceBean.class));
+        registerBeanDefinitionParser("reference", new DubboBeanDefinitionParser(ReferenceBean.class));
+        
 	}
 
 }

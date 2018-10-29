@@ -8,12 +8,12 @@
     http://www.dubbosamplemac.org/schema/dubbo/dubbo.xsd
     ">  
    
-    <dubbo:application name="dubboSample"/>
+    <dubbo:application name="sample_dubbo_server"/>
     <!-- 连接到哪个本地注册中心 -->
     <!-- 这个sample版本的，其实可以不用ZK的，会复杂一点 -->
     <dubbo:registry id="macRegistry" address="zookeeper://localhost:2181"/>
     <!-- 用dubbo协议在20880端口暴露服务 -->
-    <dubbo:protocol name="dubbo" port="28080"/>
+    <dubbo:protocol host="127.0.0.1" port="28080"/>
     <!-- 声明需要暴露的服务接口 -->
     <dubbo:service registry="macRegistry" interface="mac.sample.dubbo.demo.server.IDemoServer" ref="demoServer"/>
     <!-- demoServer -->

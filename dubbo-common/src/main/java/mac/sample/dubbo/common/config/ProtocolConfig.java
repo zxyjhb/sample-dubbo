@@ -33,7 +33,7 @@ public class ProtocolConfig extends AbstractConfig {
     private String name;
 
     // service IP address (when there are multiple network cards available)
-    private String host;
+    private String host = "localhost";
 
     // service port
     private Integer port;
