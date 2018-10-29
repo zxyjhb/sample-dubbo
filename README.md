@@ -7,24 +7,29 @@
 
 与ali的dubbo一致，采用xml配置的方式进行dubbo服务的发布
 
+主要知识点：
+1。自定义的xml解析
+通过编写xsd文件，（这个文件分本地和远程，一般会在本地的class里面存放一份）
+实现spring提供的解析入口。实现自定义的xml解析配置
+2。springbean的加载顺序：以及spring暴露接口的用法
+详细可以参考 serviceBean和referenceBean
+3。java动态代理的实现
+4。socket/mina/netty通讯实现
+5。zk的使用
+6。代码设计的实现细节
 
-dubbo-master模块：dubbo的核心包
+
+
+
+dubbo-common模块：用于spring注册，实现dubbo.xml的配置解析，配置bean
+
+dubbo-master模块：dubbo界面的核心包
 进行客户端和服务端注册的管理（这里就不用ZK了，就是单机）
 实现基于TCP的RPC
-TCP通讯采用mina
+TCP通讯采用socket/mina/netty
 
-
-dubbo-client模块：客户端，应用引入client包进行客户端开发
-实现dubbo.xml的配置解析 配置bean
-
-
-dubbo-server模块：服务端，应用引入服务端包进行服务端开发
-实现dubbo.xml的配置解析，配置bean
-
-dubbo-common模块：用于spring注册
-
-config
-
+dubbo-demo-client模块：客户端demo的客户端模块，引入dubbo.jar,仿dubbo配置
+dubbo-demo-server模块：服务端demo的服务端模块,引入dubbo.jar,仿dubbo配置
 
 
 功能实现：
