@@ -5,7 +5,11 @@ import java.util.List;
 import java.util.Map;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.BeanFactoryUtils;
+import org.springframework.beans.factory.support.BeanDefinitionBuilder;
+import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.ConfigurableApplicationContext;
+import mac.sample.dubbo.common.config.ReferenceConfig;
 import mac.sample.dubbo.common.config.ServiceConfig;
 
 /**
@@ -25,13 +29,19 @@ public class DubboBootstrap {
 	 */
 	private final static Logger logger = Logger.getLogger(DubboBootstrap.class);
 	/**
-	 * 上下文2对象
+	 * 上下文对象
 	 */
     private transient ApplicationContext applicationContext;
     /**
-     * 服务列表
+     * 消费者列表
      */
 	private transient List<ServiceConfig> serviceConfigList;	
+	
+	 /**
+     * 生产者列表
+     */
+	private transient List<ReferenceConfig> referenceConfigList;	
+	
 	
 	public DubboBootstrap() {
 		
@@ -41,6 +51,7 @@ public class DubboBootstrap {
 	
 		this.applicationContext = applicationContext;
 		this.serviceConfigList = new ArrayList<ServiceConfig>(); 
+		this.referenceConfigList = new ArrayList<ReferenceConfig>(); 
 	}
 	/**
 	 * 注册服务
@@ -55,6 +66,7 @@ public class DubboBootstrap {
 	/**
 	 * 监听开始，进行bean的注入
 	 */
+	@SuppressWarnings("unchecked")
 	public void start() {
 		logger.info("-----------------[DubboBootstrap] start--------------------------");
 		Map<String, ServiceConfig> serviceConfigMap = applicationContext == null ? null : BeanFactoryUtils.beansOfTypeIncludingAncestors(applicationContext, ServiceConfig.class, false, false);
@@ -65,6 +77,16 @@ public class DubboBootstrap {
         		serviceConfigList.add(serviceConfig);
         	}
         }
+		
+		Map<String, ReferenceConfig> referenceConfigMap = applicationContext == null ? null : BeanFactoryUtils.beansOfTypeIncludingAncestors(applicationContext, ReferenceConfig.class, false, false);
+        //存在dubbo配置
+		if(referenceConfigMap != null & referenceConfigMap.size()>0) {
+        	for(ReferenceConfig referenceConfig : referenceConfigMap.values()) {
+        		logger.info("[DubboBootstrap] config reference:" + referenceConfig);
+        		referenceConfigList.add(referenceConfig);
+        		registerBean(referenceConfig.getId(),referenceConfig.getInterfaceName());
+        	}
+        }
 	}
 
 	/**
@@ -72,5 +94,25 @@ public class DubboBootstrap {
 	 */
 	public void stop() {
 		logger.info("-------------------------------[DubboBootstrap] stop-----------------------------------------");
+	}
+	
+	
+	
+	private void registerBean(String beanName,String beanClassNmae) {
+		try {
+			//将applicationContext转换为ConfigurableApplicationContext
+		    ConfigurableApplicationContext configurableApplicationContext = (ConfigurableApplicationContext) applicationContext;
+		    // 获取bean工厂并转换为DefaultListableBeanFactory
+		    DefaultListableBeanFactory defaultListableBeanFactory = (DefaultListableBeanFactory) configurableApplicationContext.getBeanFactory();
+		    // 通过BeanDefinitionBuilder创建bean定义
+		    BeanDefinitionBuilder beanDefinitionBuilder = BeanDefinitionBuilder.genericBeanDefinition(Class.forName(beanClassNmae));
+		    // 注册bean
+		    defaultListableBeanFactory.registerBeanDefinition(beanName, beanDefinitionBuilder.getRawBeanDefinition());
+			
+		}catch(Exception e) {
+
+    		logger.error("[DubboBootstrap] registerBean beanName:" + beanName, e);
+		}
+		
 	}
 }
