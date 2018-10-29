@@ -19,10 +19,20 @@ public class DemoServer implements IDemoServer{
 		demoDTO.setName("jihaibo");
 	}
 	
+	public String demo() {
+		
+		return "demo is ok";
+	}
+	
 	
 	public DemoDTO getDemoDTO() {
 		
 		return demoDTO;
+	}
+
+
+	public String sample() {
+		return "sample is ok";
 	}
 	
 	

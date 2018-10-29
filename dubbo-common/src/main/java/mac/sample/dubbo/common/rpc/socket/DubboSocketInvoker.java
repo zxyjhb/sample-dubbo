@@ -30,8 +30,10 @@ public class DubboSocketInvoker<T> implements IDubboInvoker<T>{
 	@SuppressWarnings("unchecked")
 	public T invoker(final Class<T> invokerClass, final String host, final int port) {
 		
+		logger.info("[DubboSocketInvoker] dubbo rpc invoker: " + invokerClass.getName() + ", host:" + host + ",port:" + port);
+		
 		return (T) Proxy.newProxyInstance(invokerClass.getClassLoader(),
-				invokerClass.getInterfaces(), new InvocationHandler() {
+				new Class<?>[] { invokerClass }, new InvocationHandler() {
 					public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
 						Socket socket = null;
 						ObjectOutputStream output = null;
@@ -40,7 +42,7 @@ public class DubboSocketInvoker<T> implements IDubboInvoker<T>{
 							socket = new Socket();
 							socket.connect(new InetSocketAddress(host,port));
 							output = new ObjectOutputStream(socket.getOutputStream());
-							output.writeUTF(invokerClass.getName());
+							output.writeUTF("mac.sample.dubbo.demo.server.dubbo.DemoServer");
 							output.writeUTF(method.getName());
 							output.writeObject(method.getParameterTypes());
 							output.writeObject(args);

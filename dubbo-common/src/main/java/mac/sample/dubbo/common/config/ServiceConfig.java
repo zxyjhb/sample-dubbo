@@ -2,7 +2,6 @@ package mac.sample.dubbo.common.config;
 
 import mac.sample.dubbo.common.rpc.DubboRpcFactory;
 import mac.sample.dubbo.common.rpc.IDubboInject;
-import mac.sample.dubbo.common.rpc.IDubboInvoker;
 
 /**
  * ServiceConfig
@@ -35,7 +34,6 @@ public class ServiceConfig<T> extends AbstractConfig {
 	 * 应用配置（用于将应用发布到zk里面，就是做一个单应用的标记）
 	 */
 	private ApplicationConfig applicationConfig;
-	
 	/**
 	 * 服务名称
 	 */
@@ -116,8 +114,22 @@ public class ServiceConfig<T> extends AbstractConfig {
 	/**
 	 * 发布rpc服务
 	 */
+	@SuppressWarnings("unchecked")
 	public void inject() {
-		inject.inject(this.interfaceClass, this.protocolConfig.getHost(), this.protocolConfig.getPort());
+		
+		Thread injectThread =  new Thread(new Runnable(){
+			public void run() {
+				try {
+					inject.inject((Class<T>) ref.getClass(), protocolConfig.getHost(), protocolConfig.getPort());
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}	
+		});
+		injectThread.setDaemon(true);
+		injectThread.start();
+		
 	}
     //methods  先不搞了
 

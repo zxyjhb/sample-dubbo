@@ -28,4 +28,9 @@ public class DemoClient {
 		
 		logger.info("receive: " + demoServer.getDemoDTO());
 	}
+	
+	public void demo() {
+		
+		logger.info("receive: " + demoServer.demo());
+	}
 }

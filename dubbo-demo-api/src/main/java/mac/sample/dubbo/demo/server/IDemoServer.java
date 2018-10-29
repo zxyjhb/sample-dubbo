@@ -9,6 +9,10 @@ import mac.sample.dubbo.demo.domain.DemoDTO;
  */
 public interface IDemoServer {
 	
+
+	public String sample();
+	
+	public String demo();
 	
 	public DemoDTO getDemoDTO();
 

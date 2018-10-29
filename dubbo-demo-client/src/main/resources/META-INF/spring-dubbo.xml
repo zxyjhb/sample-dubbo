@@ -15,7 +15,7 @@
     <dubbo:registry address="zookeeper://localhost:2181"/>
     <!-- 这里因为还没有用到zk所以先配置端口 -->
     <!-- 用dubbo协议在20880端口暴露服务 -->
-    <dubbo:protocol host="127.0.0.1" port="28080"/>
+    <dubbo:protocol host="127.0.0.1" port="28081"/>
     <!-- 生成远程服务代理（就是RPC）进行本地调用 -->
     <dubbo:reference id="demoServer" interface="mac.sample.dubbo.demo.server.IDemoServer"/>
 

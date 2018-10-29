@@ -33,7 +33,7 @@ public class DubboSocketInject<T> implements IDubboInject<T> {
 	public void inject(Class<T> injectClass, String host, int port) {
 		ServerSocket server = null;
 		try{
-			logger.info("[DubboSocketInject] dubbo rpc register: " + injectClass.getName());
+			logger.info("[DubboSocketInject] dubbo rpc inject: " + injectClass.getName() + ", host:" + host + ",port:" + port);
 			server = new ServerSocket();
 			server.bind(new InetSocketAddress(host, port));
 			while(true){
@@ -73,11 +73,11 @@ public class DubboSocketInject<T> implements IDubboInject<T> {
 			try{
 				input = new ObjectInputStream(client.getInputStream());
 				String interfaceName = input.readUTF();
+				logger.info("InjectName:" + interfaceName);
 				Class<?> service = Class.forName(interfaceName);
 				String methodName = input.readUTF();
 				Class<?>[] parameterTypes = (Class<?>[]) input.readObject();
 				Object[] arguments = (Object[]) input.readObject();
-				
 				Method method = service.getMethod(methodName, parameterTypes);
 				Object result = method.invoke(service.newInstance(), arguments);
 				output = new ObjectOutputStream(client.getOutputStream());

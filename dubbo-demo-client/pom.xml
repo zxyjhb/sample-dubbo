@@ -10,7 +10,7 @@
   	
   	<dependency>
 	  	<groupId>mac.sample</groupId>
-		<artifactId>dubbo-sample-api</artifactId>
+		<artifactId>dubbo-demo-api</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
   	</dependency>
   	

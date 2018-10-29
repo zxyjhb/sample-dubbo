@@ -19,7 +19,6 @@ public class ReferenceConfig<T> extends AbstractConfig{
 	 * 名称
 	 */
 	private String name;
-
 	/**
 	 * 接口class
 	 */
@@ -28,7 +27,6 @@ public class ReferenceConfig<T> extends AbstractConfig{
 	 * 
 	 */
 	private String interfaceName;
-	
 	/**
 	 * 注册地址配置
 	 */
@@ -63,7 +61,6 @@ public class ReferenceConfig<T> extends AbstractConfig{
 		return interfaceName;
 	}
 
-	@SuppressWarnings("unchecked")
 	public void setInterfaceName(String interfaceName) {
 		this.interfaceName = interfaceName;
 	}

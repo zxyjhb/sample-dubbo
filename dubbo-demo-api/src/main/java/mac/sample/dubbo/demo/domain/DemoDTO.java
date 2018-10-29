@@ -1,14 +1,19 @@
 package mac.sample.dubbo.demo.domain;
 
+import java.io.Serializable;
 
 /**
  * 
  * @author jihaibo
  *
  */
-public class DemoDTO {
-	
-	
+public class DemoDTO implements Serializable{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1827220658153383478L;
+
 	private String id;
 	
 	private String name;
