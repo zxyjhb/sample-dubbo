@@ -122,7 +122,6 @@ public class ServiceConfig<T> extends AbstractConfig {
 				try {
 					inject.inject((Class<T>) ref.getClass(), protocolConfig.getHost(), protocolConfig.getPort());
 				} catch (Exception e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}	
