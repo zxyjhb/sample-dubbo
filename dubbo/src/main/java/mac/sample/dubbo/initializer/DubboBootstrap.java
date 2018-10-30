@@ -66,7 +66,6 @@ public class DubboBootstrap {
 	/**
 	 * 监听开始，进行bean的注入
 	 */
-	@SuppressWarnings("unchecked")
 	public void start() {
 		logger.info("-----------------[DubboBootstrap] start--------------------------");
 		Map<String, ServiceConfig> serviceConfigMap = applicationContext == null ? null : BeanFactoryUtils.beansOfTypeIncludingAncestors(applicationContext, ServiceConfig.class, false, false);
