@@ -14,6 +14,7 @@ import org.apache.mina.filter.codec.textline.TextLineCodecFactory;
 import org.apache.mina.transport.socket.nio.NioSocketAcceptor;
 import mac.sample.dubbo.common.rpc.IDubboInject;
 import mac.sample.dubbo.common.rpc.domain.RpcTransDTO;
+import mac.sample.dubbo.common.rpc.utils.JsonUtils;
 import mac.sample.dubbo.common.rpc.utils.RpcUtils;
 
 /**
@@ -54,10 +55,13 @@ public class DubboMinaInject<T> extends IoHandlerAdapter implements IDubboInject
 	    public void sessionOpened(IoSession session)throws Exception {  
 	    	logger.info("incoming client:"+session.getRemoteAddress());  
 	    }  
-	    //当客户端发送消息到达时  
+	    //当客户端发送消息到达时 
+	    //这里不知道为啥，直接Object强转不行，那就通过json来吧
 	    @Override  
 	    public void messageReceived(IoSession session, Object message)throws Exception {  
-	    	RpcTransDTO trans = (RpcTransDTO) message;
+	    	
+	    	logger.info("client send message is:"+ message.toString()); 
+	    	RpcTransDTO trans = JsonUtils.json2Object(message.toString(), RpcTransDTO.class);
 	        logger.info("client send message is:"+ trans.toString()); 
 	        Object result = RpcUtils.invoker(trans.getClassName(), trans.getMethodName(), trans.getParameterTypes(), trans.getArgs());
 	        session.write(result);// 返回当前时间的字符串  
