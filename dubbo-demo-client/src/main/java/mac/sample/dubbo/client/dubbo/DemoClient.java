@@ -1,6 +1,8 @@
 package mac.sample.dubbo.client.dubbo;
 
 import org.apache.log4j.Logger;
+
+import mac.sample.dubbo.demo.domain.DemoDTO;
 import mac.sample.dubbo.demo.server.IDemoServer;
 /**
  * demo clent
@@ -25,12 +27,12 @@ public class DemoClient {
 	}
 	
 	public void getDemoDTO() {
-		
-		logger.info("receive: " + demoServer.getDemoDTO());
+		DemoDTO dto = demoServer.getDemoDTO();
+		logger.info("rev: " + dto.toString());
 	}
 	
 	public void demo() {
-		
-		logger.info("receive: " + demoServer.demo());
+		String demo = demoServer.demo();
+		logger.info("rev: " + demo);
 	}
 }

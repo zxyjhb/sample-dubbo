@@ -14,6 +14,8 @@ import mac.sample.dubbo.common.rpc.IDubboInject;
 
 /**
  * 
+ * 
+ * sockct服务端，这个其实可以采用lienter的形式进行单独监听，作为一个socket的服务监听
  * @author jihaibo
  *
  * @param <T>
@@ -28,7 +30,7 @@ public class DubboSocketInject<T> implements IDubboInject<T> {
 	private final Executor executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
 
 	/**
-	 * socket实现服务注入
+	 * socket实现服务注入，这里采用多线程去代理调用
 	 */
 	public void inject(Class<T> injectClass, String host, int port) {
 		ServerSocket server = null;
@@ -55,6 +57,9 @@ public class DubboSocketInject<T> implements IDubboInject<T> {
 
 	/**
 	 * 
+	 * 接收客户端发送的远程调用请求，实例化本地对象进行调用，返回调用结果给客户端
+	 * 
+	 * 简单实现一下
 	 * @author jihaibo
 	 *
 	 */
@@ -66,7 +71,6 @@ public class DubboSocketInject<T> implements IDubboInject<T> {
 		
 			this.client = client;
 		}
-
 		public void run() {
 			ObjectInputStream input = null;
 			ObjectOutputStream output = null;
