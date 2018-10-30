@@ -9,6 +9,7 @@ import org.apache.log4j.Logger;
 import org.apache.mina.core.future.ReadFuture;
 import org.apache.mina.core.session.IoSession;
 import org.apache.mina.filter.codec.ProtocolCodecFilter;
+import org.apache.mina.filter.codec.serialization.ObjectSerializationCodecFactory;
 import org.apache.mina.filter.codec.textline.TextLineCodecFactory;
 import org.apache.mina.filter.logging.LoggingFilter;
 import org.apache.mina.transport.socket.SocketConnector;
@@ -30,10 +31,8 @@ public class DubboMinaInvoker<T> implements IDubboInvoker<T>{
 	 * 日志
 	 */
 	private final static Logger logger = Logger.getLogger(DubboMinaInvoker.class);
-	
-
 	/**
-	 * 
+	 * mina版动态代理方法
 	 */
 	@SuppressWarnings("unchecked")
 	public T invoker(final Class<T> invokerClass, final String host, final int port) {
@@ -52,13 +51,17 @@ public class DubboMinaInvoker<T> implements IDubboInvoker<T>{
 				         */
 						SocketConnector connector = new NioSocketConnector();
 						connector.getFilterChain().addLast("logger", new LoggingFilter());
-						connector.getFilterChain().addLast("codec", new ProtocolCodecFilter(new TextLineCodecFactory(Charset.forName("UTF-8"))));
+						//这里有两个过滤器，ObjectSerializationCodecFactory是传输对象
+				        //TextLineCodecFactory 这个是一行一行的传输（就是字符串）
+//						connector.getFilterChain().addLast("codec", new ProtocolCodecFilter(new TextLineCodecFactory(Charset.forName("UTF-8"))));
+						connector.getFilterChain().addLast("codec", new ProtocolCodecFilter(new ObjectSerializationCodecFactory()));
 						connector.getSessionConfig().setUseReadOperation(true);
 				        IoSession session = connector.connect(new InetSocketAddress(host, port)).awaitUninterruptibly().getSession();
 				        try {
 							//发送远程调用数据
-							session.write(JsonUtils.object2Json(new RpcTransDTO("mac.sample.dubbo.demo.server.dubbo.DemoServer",method.getName(), method.getParameterTypes(),args))).awaitUninterruptibly();
-							// 发送、接受
+//							session.write(JsonUtils.object2Json(new RpcTransDTO("mac.sample.dubbo.demo.server.dubbo.DemoServer",method.getName(), method.getParameterTypes(),args))).awaitUninterruptibly();
+				        	session.write(new RpcTransDTO("mac.sample.dubbo.demo.server.dubbo.DemoServer",method.getName(), method.getParameterTypes(),args)).awaitUninterruptibly();
+				        	// 发送、接受
 				            ReadFuture read = session.read();
 				            //这里读需要等一会，不然，获取不到。莫名其妙（刚刚上手，了解不深入）
 				            read.awaitUninterruptibly();
@@ -71,7 +74,10 @@ public class DubboMinaInvoker<T> implements IDubboInvoker<T>{
 							//按理说，mina的所发送和接收是两个独立的线程，不应该会有影响，看是不是我这边是同步的搞法，就那啥了
 							//具体实现的细节，暂时不去究竟了，如果后面真的用到了mina再说吧。这个mina貌似坑有点多
 							//这里就当是遗留一个问题吧
-							logger.info("[DubboMinaInvoker] dubbo rpc rev: " + read.getMessage());
+							//
+							//已解决（问题是mina传输对象需要用到ObjectSerializationCodecFactory，TextLineCodecFactory是读行处理，按字符串）
+							//
+							logger.info("[DubboMinaInvoker] dubbo rpc rev: " + read.getMessage() + ", class:" + read.getMessage().getClass().getName());
 							return read.getMessage();
 							
 				        }catch(Exception e) {

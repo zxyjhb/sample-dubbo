@@ -30,8 +30,8 @@ public class DemoClientMain {
 	public static void main(String[] args) {
 		
 
-		//demoClient.getDemoDTO();
 		demoClient.demo();
+		demoClient.getDemoDTO();
 	}
 
 }

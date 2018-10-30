@@ -19,11 +19,15 @@ public class DubboRpcFactory {
 	/**
 	 * 客户端发送代理调用
 	 */
+//	private final static IDubboInvoker invoker = new DubboMinaInvoker();
+	
 	private final static IDubboInvoker invoker = new DubboMinaInvoker();
 	
 	/**
 	 * 服务端实现代理使用
 	 */
+//	private final static IDubboInject inject = new DubboMinaInject();
+	
 	private final static IDubboInject inject = new DubboMinaInject();
 	
 	

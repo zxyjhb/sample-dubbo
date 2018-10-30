@@ -9,6 +9,7 @@ import org.apache.mina.core.service.IoHandlerAdapter;
 import org.apache.mina.core.session.IdleStatus;
 import org.apache.mina.core.session.IoSession;
 import org.apache.mina.filter.codec.ProtocolCodecFilter;
+import org.apache.mina.filter.codec.serialization.ObjectSerializationCodecFactory;
 import org.apache.mina.filter.logging.LoggingFilter;
 import org.apache.mina.filter.codec.textline.TextLineCodecFactory;
 import org.apache.mina.transport.socket.nio.NioSocketAcceptor;
@@ -36,7 +37,10 @@ public class DubboMinaInject<T> extends IoHandlerAdapter implements IDubboInject
 		IoAcceptor ioAcceptor=new NioSocketAcceptor();
 		logger.info("begin server....");
         ioAcceptor.getFilterChain().addLast("logger", new LoggingFilter());
-        ioAcceptor.getFilterChain().addLast("codec", new ProtocolCodecFilter(new TextLineCodecFactory(Charset.forName("UTF-8"))));
+        //这里有两个过滤器，ObjectSerializationCodecFactory是传输对象
+        //TextLineCodecFactory 这个是一行一行的传输（就是字符串）
+//        ioAcceptor.getFilterChain().addLast("codec", new ProtocolCodecFilter(new TextLineCodecFactory(Charset.forName("UTF-8"))));
+        ioAcceptor.getFilterChain().addLast("codec", new ProtocolCodecFilter(new ObjectSerializationCodecFactory()));  
         ioAcceptor.setHandler(new DubboInjectIoHandlerAdapter());
         ioAcceptor.getSessionConfig().setReadBufferSize(2048);
         ioAcceptor.getSessionConfig().setIdleTime(IdleStatus.BOTH_IDLE, 10);
@@ -57,13 +61,15 @@ public class DubboMinaInject<T> extends IoHandlerAdapter implements IDubboInject
 	    }  
 	    //当客户端发送消息到达时 
 	    //这里不知道为啥，直接Object强转不行，那就通过json来吧
+	    //DO 添加ObjectSerializationCodecFactory这个过滤器就可以传输对象了
 	    @Override  
 	    public void messageReceived(IoSession session, Object message)throws Exception {  
 	    	
 	    	logger.info("client send message is:"+ message.toString()); 
-	    	RpcTransDTO trans = JsonUtils.json2Object(message.toString(), RpcTransDTO.class);
-	        logger.info("client send message is:"+ trans.toString()); 
+//	    	RpcTransDTO trans = JsonUtils.json2Object(message.toString(), RpcTransDTO.class);
+	    	RpcTransDTO trans = (RpcTransDTO)message;
 	        Object result = RpcUtils.invoker(trans.getClassName(), trans.getMethodName(), trans.getParameterTypes(), trans.getArgs());
+	        logger.info("server return client data is: " + result + ", class:" + result.getClass().getName());
 	        session.write(result);// 返回当前时间的字符串  
 	        logger.info("message written...");  
 	    }  
