@@ -60,7 +60,7 @@ public class DubboMinaInvoker<T> implements IDubboInvoker<T>{
 							session.write(JsonUtils.object2Json(new RpcTransDTO("mac.sample.dubbo.demo.server.dubbo.DemoServer",method.getName(), method.getParameterTypes(),args))).awaitUninterruptibly();
 							// 发送、接受
 				            ReadFuture read = session.read();
-				            //这里读需要等一会，不然，获取不到。莫名其妙
+				            //这里读需要等一会，不然，获取不到。莫名其妙（刚刚上手，了解不深入）
 				            read.awaitUninterruptibly();
 							if (read.getException() != null) {
 								logger.info("[DubboMinaInvoker] dubbo rpc rev exception: " + read.getException().getMessage());
@@ -68,6 +68,7 @@ public class DubboMinaInvoker<T> implements IDubboInvoker<T>{
 							// 接收,并返回
 							//这个mina还是驾驭不了哟，我这边按照json发送了呢，返回的object咋就莫名成了字符串了，
 							//不晓得是不是因为我的实体实现了toString()方法，mina封装的handle就按照字符串去搞了
+							//按理说，mina的所发送和接收是两个独立的线程，不应该会有影响，看是不是我这边是同步的搞法，就那啥了
 							//具体实现的细节，暂时不去究竟了，如果后面真的用到了mina再说吧。这个mina貌似坑有点多
 							//这里就当是遗留一个问题吧
 							logger.info("[DubboMinaInvoker] dubbo rpc rev: " + read.getMessage());
